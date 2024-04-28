@@ -79,6 +79,14 @@ async function run() {
 
         })
 
+        app.get('/myAddedSpot/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const user = await touristSpotCollection.findOne(query);
+            res.send(user);
+
+        })
+
 
     }
     finally {
