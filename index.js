@@ -12,7 +12,7 @@ app.use(express.json())
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.lm9a1gh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
-console.log(process.env.DB_USER, process.env.DB_PASS);
+// console.log(process.env.DB_USER, process.env.DB_PASS);
 const client = new MongoClient(uri, {
     serverApi: {
         version: ServerApiVersion.v1,
@@ -31,14 +31,29 @@ const findAllUser = async (req, res, userCollection) => {
 
 }
 
+const setSpotOnDB = async (req, res, touristSpotCollection) => {
+
+    const spot = req.body;
+
+    // console.log("New user", spot);
+    const result = await touristSpotCollection.insertOne(spot);
+
+    res.send(result)
+}
+
 
 async function run() {
     try {
         const database = client.db("userDB");
         const userCollection = database.collection("user");
+        const touristSpotCollection = database.collection("touristSport");
 
         app.get('/users', async (req, res) => {
             findAllUser(req, res, userCollection);
+        })
+
+        app.post('/assSpot', async (req, res) => {
+            setSpotOnDB(req, res, touristSpotCollection);
         })
     }
     finally {

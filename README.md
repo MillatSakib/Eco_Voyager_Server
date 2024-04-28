@@ -1,4 +1,4 @@
-# Eco Voyager
+# Eco Voyager (Backend)
 
 ### Deployment:
 
@@ -24,7 +24,7 @@ If you execute that command the in previous then you can execute the command bel
 vercel --prod
 ```
 
-Note: The vercel.json file must be inclueded and must remove the expression `await client.connect();` The vercel.json are given bellow:
+Note: The vercel.json file must be inclueded and must remove the statement `await client.connect();` The vercel.json are given bellow:
 
 ```json
 {
