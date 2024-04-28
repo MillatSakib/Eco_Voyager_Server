@@ -45,6 +45,17 @@ const viewMyAddedSpot = async (req, res, id, touristSpotCollection) => {
     res.send(result);
 }
 
+const deleteUserFromDB = async (req, res, touristSpotCollection, id) => {
+    try {
+        const query = { _id: new ObjectId(id) }
+        const result = await touristSpotCollection.deleteOne(query);
+        res.send(result);
+    }
+    catch (error) {
+        res.send("You give Wrong Id")
+    }
+}
+
 
 async function run() {
     try {
@@ -62,6 +73,13 @@ async function run() {
             const id = req.params.email;
             viewMyAddedSpot(req, res, id, touristSpotCollection);
         })
+        app.delete('/myAddedSpot/:id', async (req, res) => {
+            const id = req.params.id;
+            deleteUserFromDB(req, res, touristSpotCollection, id);
+
+        })
+
+
     }
     finally {
     }
