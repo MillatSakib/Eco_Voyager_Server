@@ -56,6 +56,28 @@ const deleteUserFromDB = async (req, res, touristSpotCollection, id) => {
     }
 }
 
+const updateMyAddedData = async (req, res, touristSpotCollection, id, user) => {
+    const filter = { _id: new ObjectId(id) }
+    const options = { upsert: true }
+    const updatedUser = {
+        $set: {
+            spot_name: user.spot_name,
+            country_name: user.country_name,
+            location: user.location,
+            travel_time: user.travel_time,
+            avg_cost: user.avg_cost,
+            vis_per_y: user.vis_per_y,
+            email: user.email,
+            name: user.name,
+            img_url: user.img_url,
+            seasonality: user.seasonality,
+            description: user.description,
+        }
+    }
+    const result = await touristSpotCollection.updateOne(filter, updatedUser, options);
+    res.send(result)
+}
+
 
 async function run() {
     try {
@@ -84,6 +106,13 @@ async function run() {
             const query = { _id: new ObjectId(id) }
             const user = await touristSpotCollection.findOne(query);
             res.send(user);
+
+        })
+
+        app.put('/updateSpot/:id', async (req, res) => {
+            const id = req.params.id;
+            const user = req.body;
+            updateMyAddedData(req, res, touristSpotCollection, id, user);
 
         })
 
