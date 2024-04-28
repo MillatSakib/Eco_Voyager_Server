@@ -23,13 +23,16 @@ const client = new MongoClient(uri, {
 
 
 
-const findAllUser = async (req, res, userCollection) => {
+const findAllTouristSpot = async (req, res, touristSpotCollection) => {
 
-    const cursor = userCollection.find();
+    const cursor = touristSpotCollection.find();
     const result = await cursor.toArray();
     res.send(result)
 
 }
+
+
+
 
 const setSpotOnDB = async (req, res, touristSpotCollection) => {
 
@@ -45,14 +48,13 @@ const setSpotOnDB = async (req, res, touristSpotCollection) => {
 async function run() {
     try {
         const database = client.db("userDB");
-        const userCollection = database.collection("user");
         const touristSpotCollection = database.collection("touristSport");
 
-        app.get('/users', async (req, res) => {
-            findAllUser(req, res, userCollection);
+        app.get('/allTouristSpots', async (req, res) => {
+            findAllTouristSpot(req, res, touristSpotCollection);
         })
 
-        app.post('/assSpot', async (req, res) => {
+        app.post('/addSpot', async (req, res) => {
             setSpotOnDB(req, res, touristSpotCollection);
         })
     }
