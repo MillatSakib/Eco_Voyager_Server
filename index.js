@@ -45,6 +45,8 @@ const setSpotOnDB = async (req, res, touristSpotCollection) => {
 }
 
 
+
+
 async function run() {
     try {
         const database = client.db("userDB");
@@ -56,6 +58,10 @@ async function run() {
 
         app.post('/addSpot', async (req, res) => {
             setSpotOnDB(req, res, touristSpotCollection);
+        })
+        app.get('/my_added_spot/:id', async (req, res, id, touristSpotCollection) => {
+            const id = req.params.id;
+            viewMyAddedSpot(req, res, id, touristSpotCollection);
         })
     }
     finally {
