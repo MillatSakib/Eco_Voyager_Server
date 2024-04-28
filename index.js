@@ -7,9 +7,6 @@ require('dotenv').config()
 app.use(cors())
 app.use(express.json())
 
-
-
-
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.lm9a1gh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 // console.log(process.env.DB_USER, process.env.DB_PASS);
@@ -21,8 +18,6 @@ const client = new MongoClient(uri, {
     }
 });
 
-
-
 const findAllTouristSpot = async (req, res, touristSpotCollection) => {
 
     const cursor = touristSpotCollection.find();
@@ -30,8 +25,6 @@ const findAllTouristSpot = async (req, res, touristSpotCollection) => {
     res.send(result)
 
 }
-
-
 
 
 const setSpotOnDB = async (req, res, touristSpotCollection) => {
@@ -44,7 +37,13 @@ const setSpotOnDB = async (req, res, touristSpotCollection) => {
     res.send(result)
 }
 
+const viewMyAddedSpot = async (req, res, id, touristSpotCollection) => {
+    const query = { email: id }
 
+    const touristSpots = await touristSpotCollection.find(query);
+    const result = await touristSpots.toArray();
+    res.send(result);
+}
 
 
 async function run() {
@@ -59,8 +58,8 @@ async function run() {
         app.post('/addSpot', async (req, res) => {
             setSpotOnDB(req, res, touristSpotCollection);
         })
-        app.get('/my_added_spot/:id', async (req, res, id, touristSpotCollection) => {
-            const id = req.params.id;
+        app.get('/my_added_spot/:email', async (req, res) => {
+            const id = req.params.email;
             viewMyAddedSpot(req, res, id, touristSpotCollection);
         })
     }
