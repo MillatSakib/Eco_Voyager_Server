@@ -18,9 +18,9 @@ const client = new MongoClient(uri, {
     }
 });
 
-const findAllTouristSpot = async (req, res, touristSpotCollection) => {
+const findAllTouristSpot = async (req, res, touristSpotCollection, sort) => {
 
-    const cursor = touristSpotCollection.find();
+    const cursor = touristSpotCollection.find().sort({ avg_cost: sort });
     const result = await cursor.toArray();
     res.send(result)
 
@@ -100,8 +100,9 @@ async function run() {
         const database = client.db("userDB");
         const touristSpotCollection = database.collection("touristSport");
         const countryCollection = database.collection("Country");
-        app.get('/allTouristSpots', async (req, res) => {
-            findAllTouristSpot(req, res, touristSpotCollection);
+        app.get('/allTouristSpots/:sort', async (req, res) => {
+            const sort = req.params.sort;
+            findAllTouristSpot(req, res, touristSpotCollection, sort);
         })
         app.get('/allSixSpots', async (req, res) => {
             findsixTouristSpot(req, res, touristSpotCollection);
