@@ -53,6 +53,14 @@ const viewMyAddedSpot = async (req, res, id, touristSpotCollection) => {
     res.send(result);
 }
 
+const allTouristSpotonCountry = async (req, res, id, touristSpotCollection) => {
+    const query = { country_name: id }
+
+    const touristSpots = await touristSpotCollection.find(query);
+    const result = await touristSpots.toArray();
+    res.send(result);
+}
+
 const deleteUserFromDB = async (req, res, touristSpotCollection, id) => {
     try {
         const query = { _id: new ObjectId(id) }
@@ -141,6 +149,11 @@ async function run() {
 
         app.get('/find_all_country/', async (req, res) => {
             findAllTouristSpot(req, res, countryCollection);
+        })
+        app.get('/allTouristSpot/:countryName', async (req, res) => {
+            const countryName = req.params.countryName;
+
+            allTouristSpotonCountry(req, res, countryName, touristSpotCollection);
         })
 
 
