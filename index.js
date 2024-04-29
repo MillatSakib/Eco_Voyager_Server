@@ -116,6 +116,18 @@ async function run() {
 
         })
 
+        app.get('/tourist_spot_details/:id', async (req, res) => {
+            const id = req.params.id;
+            try {
+                const query = { _id: new ObjectId(id) }
+                const touristSpot = await touristSpotCollection.findOne(query);
+                res.send(touristSpot);
+            }
+            catch (error) {
+                res.send(`Your requested ID invalid. Error:${error}`)
+            }
+        })
+
 
     }
     finally {
