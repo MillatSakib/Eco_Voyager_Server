@@ -91,7 +91,7 @@ async function run() {
     try {
         const database = client.db("userDB");
         const touristSpotCollection = database.collection("touristSport");
-
+        const countryCollection = database.collection("Country");
         app.get('/allTouristSpots', async (req, res) => {
             findAllTouristSpot(req, res, touristSpotCollection);
         })
@@ -137,6 +137,10 @@ async function run() {
             catch (error) {
                 res.send(`Your requested ID invalid. Error:${error}`)
             }
+        })
+
+        app.get('/find_all_country/', async (req, res) => {
+            findAllTouristSpot(req, res, countryCollection);
         })
 
 
