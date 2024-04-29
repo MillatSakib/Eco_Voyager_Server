@@ -26,6 +26,14 @@ const findAllTouristSpot = async (req, res, touristSpotCollection) => {
 
 }
 
+const findsixTouristSpot = async (req, res, touristSpotCollection) => {
+
+    const cursor = touristSpotCollection.find().limit(6);
+    const result = await cursor.toArray();
+    res.send(result)
+
+}
+
 
 const setSpotOnDB = async (req, res, touristSpotCollection) => {
 
@@ -86,6 +94,9 @@ async function run() {
 
         app.get('/allTouristSpots', async (req, res) => {
             findAllTouristSpot(req, res, touristSpotCollection);
+        })
+        app.get('/allSixSpots', async (req, res) => {
+            findsixTouristSpot(req, res, touristSpotCollection);
         })
 
         app.post('/addSpot', async (req, res) => {
